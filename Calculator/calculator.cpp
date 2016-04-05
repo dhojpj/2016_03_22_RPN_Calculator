@@ -254,8 +254,13 @@ void calculator::commands()
         {
 //            cout<<"tobeprase: "<<toBePrase<<endl;
             p->getInput(toBePrase);
-            p->printQueueTemp();
+//            p->printQueueTemp();
             p->RPN();
+
+
+            cout << "the rpn = " << p->rpn() << endl;
+
+
             p->printRPNQueue();
             mTemp = p->getAnswer();
             cout << endl;

@@ -28,6 +28,7 @@ public:
 
     typedef void (mixed::*MixedPtr)(const mixed&);
     typedef void (Parser::*ParserPtr)(Node<twin*>*);
+    typedef string (Parser::*ParserPtrStr)(Node<twin*>*);
     typedef void (Parser::*PEDMASPtr)();
 
 
@@ -43,6 +44,7 @@ public:
     mixed getAnswer();
     void printRPNQueue();
     void printQueueTemp();
+    string rpn();
 
     void RPN();
     void poppingStackParentheses();
@@ -56,7 +58,8 @@ private:
 
     PEDMASPtr pedmas[100];
     ParserPtr pp[2]; // function pointers for the printing of the RPN queue
-    ParserPtr pt[2]; // function pointers for the printing of the RPN queue
+    ParserPtr pt[2]; // function pointers for the printing of the RPN queue temp
+    ParserPtrStr ps[2]; // function pointers for the printing of the RPN queue string
     MixedPtr mp[100]; // function pointers holds the operations -- seems excessive memory
 
     Stack<twin*> *s_numbers;
@@ -66,11 +69,15 @@ private:
     mixed answer;
 
 
-    void twin_true(Node<twin*> *ptr);
     void twin_false(Node<twin*> *ptr);
+    void twin_true(Node<twin*> *ptr);
 
-    void twin_true_temp(Node<twin*> *ptr);
     void twin_false_temp(Node<twin*> *ptr);
+    void twin_true_temp(Node<twin*> *ptr);
+
+    string twin_false_str(Node<twin*> *ptr);
+    string twin_true_str(Node<twin*> *ptr);
+
 
     void createToken(char *t);
     void orderOfPrecedence(); // PEMDAS

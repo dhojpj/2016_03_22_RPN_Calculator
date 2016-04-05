@@ -21,11 +21,13 @@ Parser::Parser()
     q_temp = new Queue<twin*>;
 
     pp[0] = &Parser::twin_false;
-
     pp[1] = &Parser::twin_true;
 
     pt[0] = &Parser::twin_false_temp;
     pt[1] = &Parser::twin_true_temp;
+
+    ps[0] = &Parser::twin_false_str;
+    ps[1] = &Parser::twin_true_str;
 
     mp['+'] = &mixed::add;
     mp['-'] = &mixed::subtract;
@@ -370,7 +372,7 @@ void Parser::printRPNQueue()
 {
     Node<twin*> *ptr = q->getHead();
 
-    cout << "Reverse Polish Notation:  ";
+//    cout << "Reverse Polish Notation:  " << this->rpn() << endl;
 
     for(; ptr; ptr = ptr->nextNode())
     {
@@ -409,6 +411,29 @@ void Parser::printQueueTemp()
     cout << endl;
 }
 
+string Parser::rpn()
+{
+    stringstream temp;
+    string rpn;
+//    rpn = "";
+    Node<twin*> *ptr = q->getHead();
+
+    for(; ptr; ptr = ptr->nextNode())
+    {
+
+        // calling a function pointer depending if it's bool false/true (i.e. mixed/operator)
+        temp << (this->*ps[ptr->getData()->b])(ptr);
+    }
+
+    rpn = temp.str();
+
+    temp.str(string());
+
+    return rpn;
+}
+
+
+
 
 
 void Parser::twin_false(Node<twin*> *ptr)
@@ -432,7 +457,6 @@ void Parser::twin_true(Node<twin*> *ptr)
     s_numbers->push(temp1);
 }
 
-
 void Parser::twin_false_temp(Node<twin*> *ptr)
 {
     cout << *(mixed*)ptr->getData()->v << " ";
@@ -442,6 +466,31 @@ void Parser::twin_true_temp(Node<twin*> *ptr)
 {
     cout << (*(string*)ptr->getData()->v)[0] << " ";
 }
+
+
+
+// THIS PART NEEDS TO GET THE PROPER VALUE
+string Parser::twin_false_str(Node<twin*> *ptr)
+{
+    stringstream ss;
+
+    ss << *(mixed*)ptr->getData()->v << " ";
+
+    string temp = ss.str();
+
+    ss.str(string());
+
+    return temp;
+}
+
+string Parser::twin_true_str(Node<twin*> *ptr)
+{
+    string temp = (*(string*)ptr->getData()->v) + " ";
+
+    return temp;
+}
+
+
 
 
 
